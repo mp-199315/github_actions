@@ -1,10 +1,13 @@
 name: Multiple shells commands
+
 on:
   push:
     branches:
-      - "main"
+      - "master"   # changed from "main" → matches your branch
   pull_request:
     types: [closed, assigned, opened, reopened]
+  workflow_dispatch:       # allows manual trigger from GitHub UI
+
 jobs:
   run-shell-command:
     runs-on: ubuntu-latest
@@ -14,15 +17,18 @@ jobs:
           import platform
           print(platform.processor())
         shell: python
+
   run-windows-command:
     runs-on: windows-latest
     needs: ["run-shell-command"]
     steps:
       - name: current directory with powershell
         run: Get-Location
+
       - name: current directory with bash
         run: pwd
         shell: bash
+
       - name: print some default env variables
         run: |
           echo "HOME: ${HOME}"
